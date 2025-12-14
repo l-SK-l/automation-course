@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StatusCodeInterceptionTest {
     Playwright playwright;
@@ -40,6 +40,7 @@ public class StatusCodeInterceptionTest {
         page.click("a:has-text('404')");
 
         // Проверка мок-текста
+        assertTrue(page.locator("h3").isVisible(), "Элемент h3 не виден на странице");
         assertEquals("Mocked Success Response", page.textContent("h3"));
     }
 
