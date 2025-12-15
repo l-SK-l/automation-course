@@ -45,3 +45,5 @@ build/
 **/search_results.png
 /search_results.png
 /allure-results/
+/.playwright-mcp/
+/.claude/
