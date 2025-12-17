@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,6 +52,11 @@ public class CartTest {
         }
 
         long mismatch = Files.mismatch(actual, expected);
+
+        if (mismatch != -1) {
+            Files.copy(actual, Paths.get("diff.png"));
+        }
+
         assertEquals(-1, mismatch);
     }
 
