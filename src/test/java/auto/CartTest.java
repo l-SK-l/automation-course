@@ -2,10 +2,12 @@ package auto;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -32,19 +34,30 @@ public class CartTest {
 
     @Test
     void testCartActions() {
-        page.navigate("https://the-internet.herokuapp.com/add_remove_elements/");
+        try {
+            page.navigate("https://the-internet.herokuapp.com/add_remove_elements/");
 
-        // Добавление ЕЛЕМЕНТА
-        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add Element")).click();
-        page.locator("#elements").screenshot(new Locator.ScreenshotOptions()
-                .setPath(getTimestampPath("after_add_element.png")));
+            // Добавление ЕЛЕМЕНТА
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add Element")).click();
+            page.locator("#elements").screenshot(new Locator.ScreenshotOptions()
+                    .setPath(getTimestampPath("after_add_element.png")));
 
-        // Удаление ЕЛЕМЕНТА
-        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Delete")).click();
-        assertThat(page.locator("#elements button")).hasCount(0);
-        page.screenshot(new Page.ScreenshotOptions()
-                .setPath(getTimestampPath("after_remove_element.png")));
-
+            // Удаление ЕЛЕМЕНТА
+            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Delete")).click();
+            assertThat(page.locator("#elements button")).hasCount(0);
+            page.screenshot(new Page.ScreenshotOptions()
+                    .setPath(getTimestampPath("after_remove_element.png")));
+        } catch (Exception e) {
+            // При ошибке прикрепляем скриншот к Allure
+            byte[] screenshot = page.screenshot();
+            Allure.addAttachment(
+                    "Screenshot on Failure",
+                    "image/png",
+                    new ByteArrayInputStream(screenshot),
+                    ".png"
+            );
+            throw e;
+        }
     }
 
     private Path getTimestampPath(String filename) {
@@ -52,7 +65,7 @@ public class CartTest {
     }
 
     @AfterEach
-    void teardown() {
+    void cleanup() {
         context.close();
         browser.close();
         playwright.close();
