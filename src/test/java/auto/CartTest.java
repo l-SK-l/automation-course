@@ -7,13 +7,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CartTest {
     Playwright playwright;
@@ -30,6 +35,23 @@ public class CartTest {
         context = browser.newContext(new Browser.NewContextOptions()
                 .setRecordVideoDir(Paths.get(timestamp + "/videos/")));
         page = context.newPage();
+    }
+
+    @Test
+    void testHomePageVisual() throws IOException {
+        page.navigate("https://the-internet.herokuapp.com");
+        Path actual = Paths.get("actual.png");
+        page.screenshot(new Page.ScreenshotOptions().setPath(actual));
+
+        Path expected = Paths.get("expected.png");
+
+        if (!Files.exists(expected)) {
+            Files.copy(actual, expected);
+            return;
+        }
+
+        long mismatch = Files.mismatch(actual, expected);
+        assertEquals(-1, mismatch);
     }
 
     @Test
