@@ -12,7 +12,6 @@ public class ParallelTests {
 
     @Test
     void testLoginPage() {
-        System.out.println("[" + Thread.currentThread().getName() + "] testLoginPage START - " + System.currentTimeMillis());
 
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
@@ -26,12 +25,10 @@ public class ParallelTests {
         browser.close();
         playwright.close();
 
-        System.out.println("[" + Thread.currentThread().getName() + "] testLoginPage END - " + System.currentTimeMillis());
     }
 
     @Test
     void testAddRemoveElements() {
-        System.out.println("[" + Thread.currentThread().getName() + "] testAddRemoveElements START - " + System.currentTimeMillis());
 
         Playwright playwright = Playwright.create();
         Browser browser = playwright.chromium().launch();
@@ -46,6 +43,5 @@ public class ParallelTests {
         browser.close();
         playwright.close();
 
-        System.out.println("[" + Thread.currentThread().getName() + "] testAddRemoveElements END - " + System.currentTimeMillis());
     }
 }
