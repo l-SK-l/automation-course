@@ -122,6 +122,7 @@
                     <argLine>
                         -Dfile.encoding=UTF-8
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectjweaver.version}/aspectjweaver-${aspectjweaver.version}.jar"
+                        -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
                     <properties>
                         <configurationParameters>
