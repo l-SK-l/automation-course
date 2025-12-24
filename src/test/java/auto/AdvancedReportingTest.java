@@ -38,7 +38,7 @@ public class AdvancedReportingTest {
 
     @BeforeAll
     static void setupExtent() {
-        ExtentSparkReporter reporter = new ExtentSparkReporter("allure-results/extent-report.html");
+        ExtentSparkReporter reporter = new ExtentSparkReporter("extent-reports/extent-report.html");
         reporter.config().setDocumentTitle("Playwright Extent Report");
         extent = new ExtentReports();
         extent.attachReporter(reporter);
@@ -98,6 +98,8 @@ public class AdvancedReportingTest {
 
         // Тут ожидаем результат с таймаутом
         String alertMessage = alertMessageFuture.get(5, TimeUnit.SECONDS);
+        assertEquals("I am a JS Alert", alertMessage,
+                "Сообщение алерта должно быть 'I am a JS Alert'");
         logExtent(Status.INFO, "Сообщение алерта получено: " + alertMessage);
         return alertMessage;
     }
@@ -115,7 +117,7 @@ public class AdvancedReportingTest {
 
     private void captureSuccessScreenshot() throws IOException {
         String screenshotName = "success-screenshot.png";
-        Path screenshotPath = Paths.get("allure-results", screenshotName);
+        Path screenshotPath = Paths.get("extent-reports", screenshotName);
 
         // Получить скриншот
         byte[] screenshot = page.screenshot();
@@ -123,11 +125,6 @@ public class AdvancedReportingTest {
         // Сохранить скриншот в файл
         Files.createDirectories(screenshotPath.getParent());
         Files.write(screenshotPath, screenshot);
-
-        // Для Allure
-        try (InputStream screenshotStream = new ByteArrayInputStream(screenshot)) {
-            Allure.addAttachment("Успешное выполнение", "image/png", screenshotStream, ".png");
-        }
 
         // Для ExtentReports
         test.pass("Скриншот успешного выполнения",
@@ -151,7 +148,7 @@ public class AdvancedReportingTest {
 
         // Логирование ошибки в ExtentReports
         String screenshotName = "error-screenshot.png";
-        Path screenshotPath = Paths.get("allure-results", screenshotName);
+        Path screenshotPath = Paths.get("extent-reports", screenshotName);
 
         try {
             Files.createDirectories(screenshotPath.getParent());
