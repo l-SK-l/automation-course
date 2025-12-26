@@ -32,7 +32,7 @@ jobs:
         run: mvn install -DskipTests
 
       - name: Install Playwright browsers
-        run: mvn exec:java -Dexec.mainClass="com.microsoft.playwright.CLI" -Dexec.args="install chromium"
+        run: mvn exec:java -Dexec.mainClass="com.microsoft.playwright.CLI" -Dexec.args="install --with-deps chromium"
 
       - name: Run tests
         run: mvn test -Dtest=MobileDynamicControlsTest
