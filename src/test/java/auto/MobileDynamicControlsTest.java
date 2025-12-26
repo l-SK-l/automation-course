@@ -24,7 +24,7 @@ public class MobileDynamicControlsTest {
                 .setIsMobile(true)
                 .setHasTouch(true);
 
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)); // Установите headless на false для визуализации
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
         context = browser.newContext(deviceOptions);
         page = context.newPage();
     }
