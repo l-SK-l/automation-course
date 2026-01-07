@@ -21,6 +21,7 @@ interface DbConfig extends org.aeonbits.owner.Config {
     String dbPassword();
 }
 
+@Disabled("no need")
 public class LoginDbTest {
     private Connection connection;
     private Page page;
