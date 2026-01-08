@@ -141,7 +141,6 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectjweaver.version}/aspectjweaver-${aspectjweaver.version}.jar"
                         -Dallure.results.directory=${project.build.directory}/allure-results
                         -XX:+EnableDynamicAgentLoading
-                        -XX:-UseSharedArchives
                     </argLine>
                     <properties>
                         <configurationParameters>
